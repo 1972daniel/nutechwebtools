@@ -652,134 +652,117 @@
     </footer>
 
     <script>
-        // Tool data
-        const tools = {
-            imageTools: [
-                { name: "Image Converter", desc: "Convert between JPG, PNG, GIF, and more", icon: "fa-exchange-alt" },
-                { name: "Image Compressor", desc: "Reduce image file size without losing quality", icon: "fa-compress-alt" },
-                { name: "Image Resizer", desc: "Resize images to any dimensions", icon: "fa-expand-alt" },
-                { name: "Image Cropper", desc: "Crop images to your desired aspect ratio", icon: "fa-crop-alt" },
-                { name: "Image to Text (OCR)", desc: "Extract text from images using OCR technology", icon: "fa-text" },
-                { name: "Image Rotator/Flipper", desc: "Rotate or flip images horizontally/vertically", icon: "fa-sync-alt" }
-            ],
-            documentTools: [
-                { name: "PDF to Word / Word to PDF", desc: "Convert between PDF and Word documents", icon: "fa-file-word" },
-                { name: "PDF Compressor", desc: "Reduce PDF file size while preserving quality", icon: "fa-file-pdf" },
-                { name: "PDF Merger & Splitter", desc: "Combine or split PDF files easily", icon: "fa-file-archive" },
-                { name: "Document Converter", desc: "Convert between various document formats", icon: "fa-file-export" },
-                { name: "PDF Lock/Unlock", desc: "Add or remove passwords from PDF files", icon: "fa-lock" },
-                { name: "eSign PDF", desc: "Add electronic signatures to your documents", icon: "fa-signature" }
-            ],
-            calculatorTools: [
-                { name: "Scientific Calculator", desc: "Advanced calculator for complex calculations", icon: "fa-square-root-alt" },
-                { name: "Age Calculator", desc: "Calculate age from birth date to current date", icon: "fa-birthday-cake" },
-                { name: "BMI Calculator", desc: "Calculate your Body Mass Index", icon: "fa-weight" },
-                { name: "Loan EMI Calculator", desc: "Calculate Equated Monthly Installments", icon: "fa-money-bill-wave" },
-                { name: "GST Calculator", desc: "Calculate Goods and Services Tax", icon: "fa-percentage" },
-                { name: "Currency Converter", desc: "Convert between world currencies", icon: "fa-money-bill-alt" }
-            ],
-            textTools: [
-                { name: "Text Case Converter", desc: "Change text between uppercase, lowercase, etc.", icon: "fa-font" },
-                { name: "Word & Character Counter", desc: "Count words and characters in your text", icon: "fa-sort-amount-up" },
-                { name: "Remove Duplicate Lines", desc: "Clean text by removing duplicate lines", icon: "fa-clone" },
-                { name: "Text Sorter", desc: "Sort lines of text alphabetically", icon: "fa-sort-alpha-down" },
-                { name: "Text Reverser", desc: "Reverse text or word order", icon: "fa-retweet" },
-                { name: "Text Encryptor/Decryptor", desc: "Encrypt and decrypt text securely", icon: "fa-key" }
-            ],
-            developerTools: [
-                { name: "HTML/CSS/JS Minifier", desc: "Minify your code for better performance", icon: "fa-file-code" },
-                { name: "JSON Formatter & Validator", desc: "Format and validate JSON data", icon: "fa-brackets-curly" },
-                { name: "Base64 Encoder/Decoder", desc: "Encode and decode Base64 strings", icon: "fa-code" },
-                { name: "URL Encoder/Decoder", desc: "Encode and decode URL strings", icon: "fa-link" },
-                { name: "Color Picker & Converter", desc: "Pick colors and convert between formats", icon: "fa-palette" }
-            ]
-        };
+    // Tool data with file paths
+    const tools = {
+        imageTools: [
+            { name: "Image Converter", desc: "Convert between JPG, PNG, GIF, and more", icon: "fa-exchange-alt", file: "image-converter.html" },
+            { name: "Image Compressor", desc: "Reduce image file size without losing quality", icon: "fa-compress-alt", file: "image-compressor.html" },
+            { name: "Image Resizer", desc: "Resize images to any dimensions", icon: "fa-expand-alt", file: "image-resizer.html" },
+            { name: "Image Cropper", desc: "Crop images to your desired aspect ratio", icon: "fa-crop-alt", file: "image-cropper.html" },
+            { name: "Image to Text (OCR)", desc: "Extract text from images using OCR technology", icon: "fa-text", file: "image-to-text.html" },
+            { name: "Image Rotator/Flipper", desc: "Rotate or flip images horizontally/vertically", icon: "fa-sync-alt", file: "image-rotator.html" }
+        ],
+        documentTools: [
+            // Add your document tools here with file paths when you create them
+            // Example:
+            // { name: "PDF to Word", desc: "Convert PDF to Word documents", icon: "fa-file-word", file: "pdf-to-word.html" }
+        ],
+        calculatorTools: [
+            // Add your calculator tools here with file paths when you create them
+        ],
+        textTools: [
+            // Add your text tools here with file paths when you create them
+        ],
+        developerTools: [
+            // Add your developer tools here with file paths when you create them
+        ]
+    };
 
-        // Generate tool cards
-        function generateToolCards() {
-            for (const category in tools) {
-                const container = document.getElementById(category);
-                tools[category].forEach(tool => {
-                    const toolCard = document.createElement('div');
-                    toolCard.className = 'tool-card';
-                    toolCard.innerHTML = `
-                        <div class="tool-icon-header">
-                            <i class="fas ${tool.icon}"></i>
-                            <div>
-                                <div class="tool-name">${tool.name}</div>
-                                <div class="tool-desc">${tool.desc}</div>
-                            </div>
+    // Generate tool cards with links
+    function generateToolCards() {
+        for (const category in tools) {
+            const container = document.getElementById(category);
+            tools[category].forEach(tool => {
+                const toolCard = document.createElement('div');
+                toolCard.className = 'tool-card';
+                toolCard.innerHTML = `
+                    <div class="tool-icon-header">
+                        <i class="fas ${tool.icon}"></i>
+                        <div>
+                            <div class="tool-name">${tool.name}</div>
+                            <div class="tool-desc">${tool.desc}</div>
                         </div>
-                        <a href="#" class="tool-btn">Use Tool</a>
-                    `;
-                    container.appendChild(toolCard);
-                });
-            }
+                    </div>
+                    <a href="${tool.file || '#'}" class="tool-btn" ${tool.file ? '' : 'onclick="alert(\'Coming soon!\'); return false;"'}>Use Tool</a>
+                `;
+                container.appendChild(toolCard);
+            });
         }
+    }
 
-        // Search functionality
-        function setupSearch() {
-            const searchInput = document.getElementById('toolSearch');
-            const allToolCards = document.querySelectorAll('.tool-card');
+    // Search functionality
+    function setupSearch() {
+        const searchInput = document.getElementById('toolSearch');
+        const allToolCards = document.querySelectorAll('.tool-card');
+        
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
             
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
+            allToolCards.forEach(card => {
+                const toolName = card.querySelector('.tool-name').textContent.toLowerCase();
+                const toolDesc = card.querySelector('.tool-desc').textContent.toLowerCase();
                 
-                allToolCards.forEach(card => {
-                    const toolName = card.querySelector('.tool-name').textContent.toLowerCase();
-                    const toolDesc = card.querySelector('.tool-desc').textContent.toLowerCase();
-                    
-                    if (toolName.includes(searchTerm) || toolDesc.includes(searchTerm)) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
-        }
-
-        // Set current year in footer
-        function setCurrentYear() {
-            document.getElementById('currentYear').textContent = new Date().getFullYear();
-        }
-
-        // Mobile menu toggle
-        function setupMobileMenu() {
-            const menuBtn = document.querySelector('.mobile-menu-btn');
-            const nav = document.querySelector('nav ul');
-            
-            menuBtn.addEventListener('click', function() {
-                if (nav.style.display === 'flex') {
-                    nav.style.display = 'none';
+                if (toolName.includes(searchTerm) || toolDesc.includes(searchTerm)) {
+                    card.style.display = 'block';
                 } else {
-                    nav.style.display = 'flex';
-                    nav.style.flexDirection = 'column';
-                    nav.style.position = 'absolute';
-                    nav.style.top = '70px';
-                    nav.style.right = '20px';
-                    nav.style.backgroundColor = 'var(--white)';
-                    nav.style.padding = '20px';
-                    nav.style.borderRadius = '8px';
-                    nav.style.boxShadow = 'var(--shadow-md)';
-                    nav.style.gap = '15px';
+                    card.style.display = 'none';
                 }
             });
-            
-            // Close menu when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('nav') && !e.target.closest('.mobile-menu-btn') && window.innerWidth <= 768) {
-                    nav.style.display = 'none';
-                }
-            });
-        }
-
-        // Initialize everything when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            generateToolCards();
-            setupSearch();
-            setCurrentYear();
-            setupMobileMenu();
         });
-    </script>
+    }
+
+    // Set current year in footer
+    function setCurrentYear() {
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+    }
+
+    // Mobile menu toggle
+    function setupMobileMenu() {
+        const menuBtn = document.querySelector('.mobile-menu-btn');
+        const nav = document.querySelector('nav ul');
+        
+        menuBtn.addEventListener('click', function() {
+            if (nav.style.display === 'flex') {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'flex';
+                nav.style.flexDirection = 'column';
+                nav.style.position = 'absolute';
+                nav.style.top = '70px';
+                nav.style.right = '20px';
+                nav.style.backgroundColor = 'var(--white)';
+                nav.style.padding = '20px';
+                nav.style.borderRadius = '8px';
+                nav.style.boxShadow = 'var(--shadow-md)';
+                nav.style.gap = '15px';
+            }
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('nav') && !e.target.closest('.mobile-menu-btn') && window.innerWidth <= 768) {
+                nav.style.display = 'none';
+            }
+        });
+    }
+
+    // Initialize everything when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        generateToolCards();
+        setupSearch();
+        setCurrentYear();
+        setupMobileMenu();
+    });
+</script>
 </body>
 </html>
