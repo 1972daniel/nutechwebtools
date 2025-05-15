@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Rotator/Flipper | Multi-Tool</title>
+    <style>
+        :root {
+            --primary-color: #0066ff;
+            --primary-light: #4d94ff;
+            --primary-dark: #0047b3;
+            --white: #ffffff;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333333;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            background-color: var(--white);
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .rotator-container {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            border: 2px dashed var(--primary-color);
+            border-radius: 8px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            background-color: var(--light-gray);
+            cursor: pointer;
+        }
+
+        .upload-section:hover {
+            background-color: rgba(0, 102, 255, 0.05);
+            border-color: var(--primary-dark);
+        }
+
+        .upload-section.active {
+            background-color: rgba(0, 102, 255, 0.1);
+            border-color: var(--primary-dark);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .upload-text h3 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .upload-text p {
+            color: var(--dark-gray);
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--light-gray);
+        }
+
+        .preview-section {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 400px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .control-group h3 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .rotation-buttons, .flip-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .action-btn {
+            padding: 10px 15px;
+            background-color: var(--light-gray);
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .action-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .action-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-dark);
+        }
+
+        .file-info {
+            background-color: var(--light-gray);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .file-info p {
+            margin-bottom: 5px;
+        }
+
+        .file-info span {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--dark-gray);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .rotator-container {
+                padding: 20px;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .upload-text h3 {
+                font-size: 1.2rem;
+            }
+
+            .upload-text p {
+                font-size: 0.9rem;
+            }
+
+            .rotation-buttons, .flip-buttons {
+                gap: 5px;
+            }
+
+            .action-btn {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Image Rotator/Flipper</h1>
+            <p>Rotate and flip your images with ease</p>
+        </header>
+
+        <div class="rotator-container">
+            <div class="upload-section" id="upload-area">
+                <div class="upload-icon">🖼️</div>
+                <div class="upload-text">
+                    <h3>Drag & Drop your image here</h3>
+                    <p>or click to browse files</p>
+                </div>
+                <input type="file" id="file-input" accept="image/*">
+                <button class="btn" id="browse-btn">Browse Files</button>
+            </div>
+
+            <div class="preview-section" id="preview-section">
+                <div class="file-info" id="file-info">
+                    <p>Selected file: <span id="file-name">-</span></p>
+                </div>
+
+                <div class="image-container">
+                    <img id="image-preview" class="image-preview" src="#" alt="Image Preview">
+                </div>
+
+                <div class="controls">
+                    <div class="control-group">
+                        <h3>Rotation</h3>
+                        <div class="rotation-buttons">
+                            <button class="action-btn" data-degrees="90">90° Right</button>
+                            <button class="action-btn" data-degrees="180">180°</button>
+                            <button class="action-btn" data-degrees="270">90° Left</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>Flip</h3>
+                        <div class="flip-buttons">
+                            <button class="action-btn" data-flip="horizontal">Horizontal</button>
+                            <button class="action-btn" data-flip="vertical">Vertical</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn" id="download-btn">Download Image</button>
+                    <button class="btn btn-secondary" id="reset-btn">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2023 Multi-Tool Website. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const uploadArea = document.getElementById('upload-area');
+            const fileInput = document.getElementById('file-input');
+            const browseBtn = document.getElementById('browse-btn');
+            const previewSection = document.getElementById('preview-section');
+            const imagePreview = document.getElementById('image-preview');
+            const fileNameElement = document.getElementById('file-name');
+            const downloadBtn = document.getElementById('download-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const rotationButtons = document.querySelectorAll('.rotation-buttons .action-btn');
+            const flipButtons = document.querySelectorAll('.flip-buttons .action-btn');
+
+            // Variables
+            let originalFile = null;
+            let currentRotation = 0;
+            let currentScaleX = 1;
+            let currentScaleY = 1;
+            let originalImageUrl = null;
+
+            // Event Listeners
+            browseBtn.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', handleFileSelect);
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleDrop);
+            downloadBtn.addEventListener('click', downloadImage);
+            resetBtn.addEventListener('click', resetRotator);
+
+            // Rotation buttons
+            rotationButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all rotation buttons
+                    rotationButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const degrees = parseInt(this.dataset.degrees);
+                    currentRotation = degrees;
+                    applyTransformation();
+                });
+            });
+
+            // Flip buttons
+            flipButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Toggle active class
+                    this.classList.toggle('active');
+                    
+                    const flipType = this.dataset.flip;
+                    if (flipType === 'horizontal') {
+                        currentScaleX = this.classList.contains('active') ? -1 : 1;
+                    } else if (flipType === 'vertical') {
+                        currentScaleY = this.classList.contains('active') ? -1 : 1;
+                    }
+                    applyTransformation();
+                });
+            });
+
+            // Functions
+            function handleFileSelect(e) {
+                const file = e.target.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    processImageFile(file);
+                } else {
+                    alert('Please select a valid image file.');
+                }
+            }
+
+            function handleDragOver(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.add('active');
+            }
+
+            function handleDragLeave(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.remove('active');
+            }
+
+            function handleDrop(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.remove('active');
+                
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    processImageFile(file);
+                } else {
+                    alert('Please drop a valid image file.');
+                }
+            }
+
+            function processImageFile(file) {
+                originalFile = file;
+                fileNameElement.textContent = file.name;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    originalImageUrl = e.target.result;
+                    imagePreview.src = originalImageUrl;
+                    previewSection.style.display = 'block';
+                    
+                    // Reset transformations
+                    resetTransformations();
+                    
+                    // Scroll to preview section
+                    previewSection.scrollIntoView({ behavior: 'smooth' });
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function applyTransformation() {
+                imagePreview.style.transform = `rotate(${currentRotation}deg) scaleX(${currentScaleX}) scaleY(${currentScaleY})`;
+            }
+
+            function resetTransformations() {
+                currentRotation = 0;
+                currentScaleX = 1;
+                currentScaleY = 1;
+                applyTransformation();
+                
+                // Remove active classes from all buttons
+                rotationButtons.forEach(btn => btn.classList.remove('active'));
+                flipButtons.forEach(btn => btn.classList.remove('active'));
+            }
+
+            function downloadImage() {
+                if (!originalFile) {
+                    alert('Please upload an image first.');
+                    return;
+                }
+
+                // Create canvas to apply transformations
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+                
+                img.onload = function() {
+                    // Set canvas dimensions based on rotation
+                    if (currentRotation % 180 === 0) {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                    } else {
+                        canvas.width = img.height;
+                        canvas.height = img.width;
+                    }
+                    
+                    // Translate to center
+                    ctx.translate(canvas.width / 2, canvas.height / 2);
+                    
+                    // Apply rotation
+                    ctx.rotate(currentRotation * Math.PI / 180);
+                    
+                    // Apply flip
+                    ctx.scale(currentScaleX, currentScaleY);
+                    
+                    // Draw image
+                    ctx.drawImage(img, -img.width / 2, -img.height / 2);
+                    
+                    // Convert canvas to blob and download
+                    canvas.toBlob(function(blob) {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        
+                        // Determine file extension
+                        const extension = originalFile.name.split('.').pop();
+                        a.download = `transformed.${extension}`;
+                        
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    }, originalFile.type, 0.92); // 0.92 quality
+                };
+                
+                img.src = originalImageUrl;
+            }
+
+            function resetRotator() {
+                fileInput.value = '';
+                imagePreview.src = '#';
+                previewSection.style.display = 'none';
+                originalFile = null;
+                fileNameElement.textContent = '-';
+                resetTransformations();
+            }
+        });
+    </script>
+</body>
+</html>
