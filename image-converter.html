@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Converter | Multi-Tool</title>
+    <style>
+        :root {
+            --primary-color: #0066ff;
+            --primary-light: #4d94ff;
+            --primary-dark: #0047b3;
+            --white: #ffffff;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333333;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            background-color: var(--white);
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .converter-container {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            border: 2px dashed var(--primary-color);
+            border-radius: 8px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            background-color: var(--light-gray);
+            cursor: pointer;
+        }
+
+        .upload-section:hover {
+            background-color: rgba(0, 102, 255, 0.05);
+            border-color: var(--primary-dark);
+        }
+
+        .upload-section.active {
+            background-color: rgba(0, 102, 255, 0.1);
+            border-color: var(--primary-dark);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .upload-text h3 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .upload-text p {
+            color: var(--dark-gray);
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--light-gray);
+        }
+
+        .preview-section {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .preview-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 400px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        select, input {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: var(--white);
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2);
+        }
+
+        .quality-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quality-value {
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--dark-gray);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .converter-container {
+                padding: 20px;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .control-group {
+                width: 100%;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .upload-text h3 {
+                font-size: 1.2rem;
+            }
+
+            .upload-text p {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Image Converter</h1>
+            <p>Convert your images to different formats with ease</p>
+        </header>
+
+        <div class="converter-container">
+            <div class="upload-section" id="upload-area">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">
+                    <h3>Drag & Drop your image here</h3>
+                    <p>or click to browse files</p>
+                </div>
+                <input type="file" id="file-input" accept="image/*">
+                <button class="btn" id="browse-btn">Browse Files</button>
+            </div>
+
+            <div class="preview-section" id="preview-section">
+                <div class="preview-container">
+                    <img id="image-preview" class="image-preview" src="#" alt="Preview">
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="format-select">Output Format</label>
+                            <select id="format-select">
+                                <option value="jpeg">JPEG</option>
+                                <option value="png">PNG</option>
+                                <option value="webp">WebP</option>
+                                <option value="bmp">BMP</option>
+                            </select>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="quality-range">Quality</label>
+                            <div class="quality-control">
+                                <input type="range" id="quality-range" min="1" max="100" value="80">
+                                <span id="quality-value" class="quality-value">80</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn" id="convert-btn">Convert Image</button>
+                        <button class="btn btn-secondary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2023 Multi-Tool Website. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const uploadArea = document.getElementById('upload-area');
+            const fileInput = document.getElementById('file-input');
+            const browseBtn = document.getElementById('browse-btn');
+            const previewSection = document.getElementById('preview-section');
+            const imagePreview = document.getElementById('image-preview');
+            const formatSelect = document.getElementById('format-select');
+            const qualityRange = document.getElementById('quality-range');
+            const qualityValue = document.getElementById('quality-value');
+            const convertBtn = document.getElementById('convert-btn');
+            const resetBtn = document.getElementById('reset-btn');
+
+            let originalFile = null;
+
+            // Event Listeners
+            browseBtn.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', handleFileSelect);
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleDrop);
+            qualityRange.addEventListener('input', updateQualityValue);
+            convertBtn.addEventListener('click', convertImage);
+            resetBtn.addEventListener('click', resetConverter);
+
+            // Functions
+            function handleFileSelect(e) {
+                const file = e.target.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    processImageFile(file);
+                } else {
+                    alert('Please select a valid image file.');
+                }
+            }
+
+            function handleDragOver(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.add('active');
+            }
+
+            function handleDragLeave(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.remove('active');
+            }
+
+            function handleDrop(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.remove('active');
+                
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    processImageFile(file);
+                } else {
+                    alert('Please drop a valid image file.');
+                }
+            }
+
+            function processImageFile(file) {
+                originalFile = file;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    previewSection.style.display = 'block';
+                    
+                    // Scroll to preview section
+                    previewSection.scrollIntoView({ behavior: 'smooth' });
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function updateQualityValue() {
+                qualityValue.textContent = qualityRange.value;
+            }
+
+            function convertImage() {
+                if (!originalFile) return;
+                
+                const format = formatSelect.value;
+                const quality = parseInt(qualityRange.value) / 100;
+                
+                // Create canvas to convert image
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+                
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    
+                    // Convert to selected format
+                    let mimeType;
+                    switch (format) {
+                        case 'jpeg': mimeType = 'image/jpeg'; break;
+                        case 'png': mimeType = 'image/png'; break;
+                        case 'webp': mimeType = 'image/webp'; break;
+                        case 'bmp': mimeType = 'image/bmp'; break;
+                        default: mimeType = 'image/jpeg';
+                    }
+                    
+                    canvas.toBlob(function(blob) {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `converted.${format}`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    }, mimeType, quality);
+                };
+                
+                img.src = URL.createObjectURL(originalFile);
+            }
+
+            function resetConverter() {
+                fileInput.value = '';
+                imagePreview.src = '#';
+                previewSection.style.display = 'none';
+                originalFile = null;
+                formatSelect.value = 'jpeg';
+                qualityRange.value = '80';
+                qualityValue.textContent = '80';
+            }
+        });
+    </script>
+</body>
+</html>
