@@ -1,165 +1,323 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutechwebTools - Your All-in-One Web Toolbox</title>
-    <meta name="description" content="Free online tools for images, documents, calculations, text processing and web development">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* CSS will be provided in the next section */
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NutechwebTools</title>
+  <style>
+    :root {
+      --primary: #007BFF;
+      --primary-light: #339DFF;
+      --bg: #f9f9fb;
+      --text: #1f1f1f;
+      --shadow: rgba(0,0,0,0.08);
+      --radius: 12px;
+      --transition: all 0.3s ease;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 6px var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    nav a {
+      margin: 0 1rem;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .email {
+      font-size: 0.9rem;
+      color: var(--primary);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+      background: white;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .cta:hover {
+      opacity: 0.9;
+    }
+
+    .hero-icons {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 2rem;
+      color: var(--primary);
+    }
+
+    .search-bar {
+      margin: 2rem auto;
+      max-width: 500px;
+      display: flex;
+      justify-content: center;
+      padding: 0 1rem;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #ccc;
+      border-radius: var(--radius);
+      box-shadow: 0 2px 4px var(--shadow);
+      transition: var(--transition);
+    }
+
+    .section {
+      padding: 2rem 1rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .section h2 {
+      color: var(--primary);
+    }
+
+    .section p {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      color: #555;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .tool-card {
+      background: white;
+      padding: 1rem;
+      border-radius: var(--radius);
+      box-shadow: 0 2px 6px var(--shadow);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    .tool-icon {
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .tool-card h3 {
+      margin: 0.3rem 0;
+      font-size: 1.1rem;
+    }
+
+    .tool-card p {
+      font-size: 0.9rem;
+      margin: 0.3rem 0 1rem;
+      color: #555;
+    }
+
+    .tool-card a {
+      background: var(--primary);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .tool-card a:hover {
+      background: var(--primary-light);
+    }
+
+    footer {
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    footer nav a {
+      color: white;
+      margin: 0 0.5rem;
+      text-decoration: none;
+    }
+
+    .social-icons {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+    }
+
+    .social-icons span {
+      margin: 0 0.5rem;
+      cursor: pointer;
+    }
+
+    @media(max-width: 600px){
+      .hero h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Sticky Header -->
-    <header class="sticky-header">
-        <div class="container">
-            <div class="logo">NutechwebTools</div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="#" class="active">Home</a></li>
-                    <li><a href="#tools">Tools</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-            <div class="contact-email">
-                <a href="mailto:NutechwebTools@gmail.com">NutechwebTools@gmail.com</a>
-            </div>
-            <button class="mobile-menu-btn" aria-label="Toggle menu">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-    </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Your Daily Tools, All in One Place</h1>
-                <p class="subheadline">Convert, calculate, compress, and simplify your everyday tasks — fast and free.</p>
-                <a href="#tools" class="cta-btn">Explore Tools</a>
-            </div>
-            <div class="hero-illustration">
-                <div class="icon-group">
-                    <div class="icon-item">
-                        <i class="fas fa-image"></i>
-                        <span>Image Tools</span>
-                    </div>
-                    <div class="icon-item">
-                        <i class="fas fa-file-alt"></i>
-                        <span>Text Tools</span>
-                    </div>
-                    <div class="icon-item">
-                        <i class="fas fa-code"></i>
-                        <span>Code Tools</span>
-                    </div>
-                    <div class="icon-item">
-                        <i class="fas fa-video"></i>
-                        <span>Video Tools</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <header>
+    <div class="logo">NutechwebTools</div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Tools</a>
+      <a href="#">Contact</a>
+    </nav>
+    <div class="email">NutechwebTools@gmail.com</div>
+  </header>
 
-    <!-- Search Bar -->
-    <section class="search-section">
-        <div class="container">
-            <div class="search-container">
-                <input type="text" id="tool-search" placeholder="Search a tool..." aria-label="Search for tools">
-                <button type="submit" aria-label="Search">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-        </div>
-    </section>
+  <section class="hero">
+    <h1>Your Daily Tools, All in One Place</h1>
+    <p>Convert, calculate, compress, and simplify your everyday tasks — fast and free.</p>
+    <button class="cta">Explore Tools</button>
+    <div class="hero-icons">📷 📄 🧮 📝 🌐</div>
+  </section>
 
-    <!-- Tools Sections -->
-    <main class="tools-container" id="tools">
-        <!-- Image Tools -->
-        <section class="tool-section">
-            <div class="container">
-                <h2>📷 Image Tools</h2>
-                <p class="section-subtitle">Edit, convert and optimize your images effortlessly</p>
-                <div class="tools-grid">
-                    <!-- Tool cards will be generated here -->
-                </div>
-            </div>
-        </section>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search a tool…" onkeyup="filterTools()" />
+  </div>
 
-        <!-- Document Tools -->
-        <section class="tool-section">
-            <div class="container">
-                <h2>📄 Document Tools</h2>
-                <p class="section-subtitle">Handle PDFs and documents with ease</p>
-                <div class="tools-grid">
-                    <!-- Tool cards will be generated here -->
-                </div>
-            </div>
-        </section>
+  <section class="section" id="Image Tools">
+    <h2>📷 Image Tools</h2>
+    <p>Manage and transform images with ease.</p>
+    <div class="tools-grid">
+      <div class="tool-card"><div class="tool-icon">🖼️</div><h3>Image Converter</h3><p>Convert between image formats.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">🗜️</div><h3>Image Compressor</h3><p>Reduce image file size.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">📏</div><h3>Image Resizer</h3><p>Resize images quickly.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">✂️</div><h3>Image Cropper</h3><p>Crop your images easily.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">🔤</div><h3>Image to Text (OCR)</h3><p>Extract text from images.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">🔄</div><h3>Image Rotator/Flipper</h3><p>Rotate or flip images.</p><a href="#">Use Tool</a></div>
+    </div>
+  </section>
 
-        <!-- Calculator Tools -->
-        <section class="tool-section">
-            <div class="container">
-                <h2>🧮 Calculator Tools</h2>
-                <p class="section-subtitle">Quick calculations for various needs</p>
-                <div class="tools-grid">
-                    <!-- Tool cards will be generated here -->
-                </div>
-            </div>
-        </section>
+  <section class="section" id="Document Tools">
+    <h2>📄 Document Tools</h2>
+    <p>Handle your documents effortlessly.</p>
+    <div class="tools-grid">
+      <div class="tool-card"><div class="tool-icon">📄</div><h3>PDF to Word</h3><p>Convert PDF to Word files.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">🗜️</div><h3>PDF Compressor</h3><p>Shrink your PDF files.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">➗</div><h3>PDF Merger & Splitter</h3><p>Merge or split PDFs easily.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">📁</div><h3>Document Converter</h3><p>Convert docs between formats.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">🔒</div><h3>PDF Lock/Unlock</h3><p>Secure or unlock your PDFs.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">✍️</div><h3>eSign PDF</h3><p>Sign PDFs digitally.</p><a href="#">Use Tool</a></div>
+    </div>
+  </section>
 
-        <!-- Text Tools -->
-        <section class="tool-section">
-            <div class="container">
-                <h2>📝 Text Tools</h2>
-                <p class="section-subtitle">Manipulate and analyze text efficiently</p>
-                <div class="tools-grid">
-                    <!-- Tool cards will be generated here -->
-                </div>
-            </div>
-        </section>
+  <section class="section" id="Calculator Tools">
+    <h2>🧮 Calculator Tools</h2>
+    <p>Quick and smart calculators for everything.</p>
+    <div class="tools-grid">
+      <div class="tool-card"><div class="tool-icon">🧠</div><h3>Scientific Calculator</h3><p>Advanced calculations made easy.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">🎂</div><h3>Age Calculator</h3><p>Find your age accurately.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">⚖️</div><h3>BMI Calculator</h3><p>Calculate your body mass index.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">🏦</div><h3>Loan EMI Calculator</h3><p>Estimate monthly installments.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">📊</div><h3>GST Calculator</h3><p>GST inclusive/exclusive values.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">💱</div><h3>Currency Converter</h3><p>Convert global currencies.</p><a href="#">Use Tool</a></div>
+    </div>
+  </section>
 
-        <!-- Web/Developer Tools -->
-        <section class="tool-section">
-            <div class="container">
-                <h2>🌐 Web/Developer Tools</h2>
-                <p class="section-subtitle">Essential utilities for developers</p>
-                <div class="tools-grid">
-                    <!-- Tool cards will be generated here -->
-                </div>
-            </div>
-        </section>
-    </main>
+  <section class="section" id="Text Tools">
+    <h2>📝 Text Tools</h2>
+    <p>Smart tools for writers and developers.</p>
+    <div class="tools-grid">
+      <div class="tool-card"><div class="tool-icon">🔠</div><h3>Text Case Converter</h3><p>Change text case instantly.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">🔢</div><h3>Word & Character Counter</h3><p>Count text elements quickly.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">🧹</div><h3>Remove Duplicate Lines</h3><p>Clean up repetitive content.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">↕️</div><h3>Text Sorter</h3><p>Sort lines alphabetically.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">🔁</div><h3>Text Reverser</h3><p>Reverse your text content.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">🔐</div><h3>Encrypt/Decrypt</h3><p>Secure your text strings.</p><a href="#">Use Tool</a></div>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer class="main-footer" id="contact">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">NutechwebTools</div>
-                <nav class="footer-nav">
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#tools">Tools</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </nav>
-                <div class="footer-contact">
-                    <a href="mailto:NutechwebTools@gmail.com">NutechwebTools@gmail.com</a>
-                </div>
-                <div class="social-icons">
-                    <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
-            <div class="copyright">
-                &copy; <span id="year"></span> NutechwebTools. All rights reserved.
-            </div>
-        </div>
-    </footer>
+  <section class="section" id="Developer Tools">
+    <h2>🌐 Web/Developer Tools</h2>
+    <p>Utilities for web developers & coders.</p>
+    <div class="tools-grid">
+      <div class="tool-card"><div class="tool-icon">🧩</div><h3>HTML/CSS/JS Minifier</h3><p>Compress your code.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">🔎</div><h3>JSON Formatter</h3><p>Format and validate JSON.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">🧬</div><h3>Base64 Encoder</h3><p>Encode/Decode data easily.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">🔗</div><h3>URL Encoder</h3><p>Encode or decode URLs.</p><a href="#">Use Tool</a></div>
+      <div class="tool-card"><div class="tool-icon">🎨</div><h3>Color Picker</h3><p>Pick & convert color values.</p><a href="#">Use Tool</a></div>
+    </div>
+  </section>
 
-    <script>
-        // JavaScript will be provided in the next section
-    </script>
+  <footer>
+    <p>&copy; 2025 NutechwebTools. All rights reserved.</p>
+    <nav>
+      <a href="#">Home</a> |
+      <a href="#">Tools</a> |
+      <a href="#">Contact</a>
+    </nav>
+    <div class="social-icons">
+      <span>🐦</span>
+      <span>💻</span>
+    </div>
+  </footer>
+
+  <script>
+    function filterTools() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.tool-card');
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? 'flex' : 'none';
+      });
+    }
+  </script>
 </body>
 </html>
